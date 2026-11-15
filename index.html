@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>永續共享社群 APP</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F0;--card:#fff;--ink:#14302D;--sub:#5E7470;--pri:#0E6B63;--pri-t:#fff;--soft:#DCEBE8;--sun:#F2B632;--hot:#E4572E;--line:#D5E0DD;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1C1A;--card:#162B28;--ink:#E6F1EE;--sub:#93AEA9;--pri:#4CC2B4;--pri-t:#06201C;--soft:#1E3B37;--line:#27443F}}
+:root[data-theme="dark"]{--bg:#0E1C1A;--card:#162B28;--ink:#E6F1EE;--sub:#93AEA9;--pri:#4CC2B4;--pri-t:#06201C;--soft:#1E3B37;--line:#27443F}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.app{max-width:430px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+@media (min-width:600px){body{display:grid;place-items:center;background:#0b1513}.app{height:min(860px,96%);border-radius:30px;box-shadow:0 20px 50px rgba(0,0,0,.4)}}
+.top{flex:none;display:flex;align-items:center;gap:8px;padding:12px 14px 8px}
+.top h1{flex:1;margin:0;font-size:18px;font-weight:900}
+.loc{flex:1;text-align:left;font-weight:700;font-size:15px}
+.ic{position:relative;width:38px;height:38px;border-radius:12px;background:var(--card);font-size:18px;display:grid;place-items:center}
+.dot{position:absolute;top:6px;right:6px;min-width:15px;height:15px;border-radius:8px;background:var(--hot);color:#fff;font-size:10px;line-height:15px;text-align:center;font-weight:700}
+.main{flex:1;overflow-y:auto;padding:4px 14px 90px}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 8px}
+.sec h2{margin:0;font-size:16px;font-weight:900}.sec small{color:var(--sub);font-size:12px}
+.card{background:var(--card);border-radius:16px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center;width:100%;text-align:left}
+.th{width:58px;height:58px;flex:none;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:28px}
+.card h3{margin:0 0 2px;font-size:15px;font-weight:700}.card p{margin:0;font-size:12.5px;color:var(--sub);line-height:1.5}
+.grow{flex:1;min-width:0}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:7px;background:var(--soft);color:var(--pri);margin-right:4px}
+.tag.fresh{background:#D9F1E3;color:#175839}.card .grow{overflow-wrap:anywhere}.tag.hot{background:#FBDDD3;color:#A13214}.tag.sun{background:#FBEBBE;color:#6E4C00}
+.price{font-weight:900;color:var(--hot)}.was{text-decoration:line-through;color:var(--sub);font-size:12px;margin-left:4px}
+.banner{display:flex;gap:10px;align-items:center;background:#FBEBBE;color:#5C4100;border-radius:14px;padding:10px 12px;margin:6px 0;font-size:13px}
+.banner button{margin-left:auto;background:#5C4100;color:#FBEBBE;border-radius:9px;padding:6px 10px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.banner.ok{background:var(--soft);color:var(--pri)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+.big{background:var(--card);border-radius:16px;padding:12px 8px;text-align:center}
+.big b{display:block;font-size:28px;margin-bottom:2px}.big span{font-weight:700;font-size:14px;display:block}.big small{color:var(--sub);font-size:11.5px;line-height:1.35;display:block;margin-top:3px}
+.pts{background:var(--pri);color:var(--pri-t);border-radius:18px;padding:14px}
+.pts .n{font-size:30px;font-weight:900}.pts .r{display:flex;justify-content:space-between;align-items:center}
+.task{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.16);border-radius:12px;padding:9px 10px;margin-top:8px;font-size:13px}
+.task button{margin-left:auto;background:var(--sun);color:#3A2800;border-radius:9px;padding:5px 11px;font-weight:700;font-size:12.5px}
+.task button[disabled]{opacity:.5}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chip{flex:none;padding:6px 13px;border-radius:999px;background:var(--card);font-size:13px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--pri);color:var(--pri-t);font-weight:700}
+.btn{width:100%;background:var(--pri);color:var(--pri-t);border-radius:14px;padding:13px;font-weight:700;font-size:15px;margin-top:8px}
+.btn.alt{background:var(--card);color:var(--pri);border:1.5px solid var(--pri)}
+.btn.sm{width:auto;padding:7px 14px;font-size:13px;margin:0;border-radius:10px}
+.fab{position:absolute;right:16px;bottom:86px;background:var(--pri);color:var(--pri-t);border-radius:999px;padding:13px 18px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.28);z-index:4}
+.nav{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav button{display:grid;justify-items:center;gap:1px;font-size:11.5px;color:var(--sub);padding:3px 0}
+.nav button b{font-size:21px;font-weight:400;line-height:1.2}
+.nav button[aria-current="page"]{color:var(--pri);font-weight:700}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border-radius:13px;padding:4px;margin:6px 0 12px}
+.seg button{padding:9px;border-radius:10px;font-weight:500;font-size:14px}.seg button[aria-pressed="true"],.seg button[aria-selected="true"]{background:var(--pri);color:var(--pri-t);font-weight:700}
+.hero{height:130px;border-radius:18px;background:var(--soft);display:grid;place-items:center;font-size:62px;margin-bottom:12px}
+.box{background:var(--card);border-radius:16px;padding:14px;margin-bottom:10px}
+.box h3{margin:0 0 6px;font-size:17px}.box p{margin:3px 0;font-size:13.5px;color:var(--sub);line-height:1.6}
+.field{display:block;margin-bottom:11px}.field span{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+.ctl{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:var(--card)}
+.amt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.amt button{background:var(--card);border-radius:12px;padding:12px 0;font-weight:700;border:1.5px solid var(--line)}
+.amt button[aria-pressed="true"]{border-color:var(--pri);background:var(--soft);color:var(--pri)}
+.pool{background:linear-gradient(135deg,var(--pri),#1E8F83);color:var(--pri-t);border-radius:18px;padding:16px}
+.pool .n{font-size:34px;font-weight:900}
+.chat{flex:1;overflow-y:auto;padding:8px 14px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:9px 12px;border-radius:15px;font-size:14px;line-height:1.5;background:var(--card)}
+.msg.me{align-self:flex-end;background:var(--pri);color:var(--pri-t)}
+.send{display:flex;gap:8px;padding:10px 14px 16px}.send input{flex:1;border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;background:var(--card)}
+.toast{position:absolute;left:50%;bottom:92px;transform:translate(-50%,8px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9;max-width:86%;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stats div{background:var(--card);border-radius:14px;padding:11px 6px;text-align:center}
+.stats b{display:block;font-size:20px;font-weight:900;color:var(--pri)}.stats span{font-size:11.5px;color:var(--sub)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div id="top"></div>
+  <div id="main" class="main"></div>
+  <div id="fab"></div>
+  <nav class="nav" id="nav" aria-label="主要分頁"></nav>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const D={
+things:[
+{id:1,e:"📚",n:"設計類書籍 12 本",cat:"書籍",dist:.4,price:300,by:"個人",who:"小宇"},
+{id:2,e:"🪑",n:"實木餐椅（4張）",cat:"家具",dist:1.8,price:800,by:"個人",who:"阿凱"},
+{id:3,e:"🧥",n:"冬季大衣 九成新",cat:"衣物",dist:2.6,price:450,by:"團體",who:"永康社區站"},
+{id:4,e:"☕",n:"咖啡機（可運作）",cat:"家電",dist:4.1,price:1200,by:"個人",who:"Mia"},
+{id:5,e:"🧸",n:"兒童玩具一箱",cat:"其他",dist:.9,price:150,by:"團體",who:"愛心二手店"}],
+food:[
+{id:1,e:"🥐",shop:"晨光烘焙",type:"gift",name:"可頌（贈送）",left:4,until:"今晚 20:30",dist:.3},
+{id:2,e:"🍱",shop:"阿財便當",type:"sale",name:"雞腿便當",now:45,was:90,left:6,until:"今晚 20:00",dist:.5},
+{id:3,e:"🎁",shop:"小麥麵包坊",type:"blind",name:"驚喜包",now:60,was:180,left:9,until:"今晚 21:00",dist:.8,note:"內容與數量隨機，價值至少 3 倍"},
+{id:4,e:"🍰",shop:"午後甜點",type:"sale",name:"草莓蛋糕切片",now:35,was:75,left:3,until:"今晚 21:30",dist:1.4}],
+rest:[{n:"小巷食堂",e:"🍜",dist:.6,meal:"熱湯麵套餐"},{n:"田園便當",e:"🍛",dist:1.2,meal:"排骨便當"},{n:"樂食素食館",e:"🥗",dist:2.0,meal:"素食定食"}],
+coupons:[{n:"晨光烘焙 9折券",c:40},{n:"阿財便當 折$10",c:60},{n:"樂食素食館 飲品兌換",c:80}]
+};
+const amounts=[100,300,500];
+const fridgeKey="sustainableCommunity.fridge.v1";
+function localDate(offset=0){
+ const d=new Date();
+ d.setDate(d.getDate()+offset);
+ return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
+}
+function validDate(value){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const date=new Date(value+"T00:00:00Z");
+ return Number.isFinite(date.getTime()) && date.toISOString().slice(0,10)===value;
+}
+function loadFridge(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(fridgeKey));
+  if(Array.isArray(saved))return saved.filter(i=>i && typeof i.name==="string" && validDate(i.date));
+ }catch{}
+ return null;
+}
+function saveFridge(items){
+ try{localStorage.setItem(fridgeKey,JSON.stringify(items));return true}catch{return false}
+}
+const initialFridge=loadFridge() ?? [["鮮奶",1],["豆腐",3],["雞蛋",7]].map(([name,days])=>({name,date:localDate(days),sample:true}));
+saveFridge(initialFridge);
+const S={tab:"home",push:null,verified:false,credit:100,pts:120,dist:3,cat:"全部",fcat:"全部",sub:["書籍"],
+ pool:56,donated:0,seg:"give",amt:100,vouch:[],used:0,coup:[],orders:[],walked:false,foodView:"nearby",fridge:initialFridge,
+ chats:{},notes:[{t:"歡迎加入！完成實名認證即可預約與上架。",u:true}],unread:1,myThings:[]};
+const T=(m)=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2000)};
+const need=()=>{if(!S.verified){T("請先到「我的」完成實名認證");return true}return false};
+const note=t=>{S.notes.unshift({t,u:true});S.unread++};
+const tagOf=f=>f.type==="gift"?'<span class="tag sun">贈送</span>':f.type==="blind"?'<span class="tag hot">驚喜包</span>':'<span class="tag">打折</span>';
+
+function thingCard(i){const hit=S.sub.includes(i.cat);return `<button class="card" data-a="open" data-k="thing" data-v="${i.id}"><div class="th">${i.e}</div><div class="grow"><h3>${esc(i.n)}</h3><p>${i.dist}km · ${i.by}：${esc(i.who)}</p><p>${hit?'<span class="tag sun">符合你的訂閱</span>':''}<span class="tag">${i.cat}</span></p></div><span class="price">$${i.price}</span></button>`}
+function foodCard(f){return `<button class="card" data-a="open" data-k="food" data-v="${f.id}"><div class="th">${f.e}</div><div class="grow"><h3>${esc(f.shop)}｜${esc(f.name)}</h3><p>${f.dist}km · ${f.until}截止 · 剩 ${f.left}</p><p>${tagOf(f)}</p></div>${f.type==="gift"?'<b style="color:var(--pri)">免費</b>':`<span class="price">$${f.now}<span class="was">$${f.was}</span></span>`}</button>`}
+
+const V={};
+V.home=()=>`
+${S.verified?`<div class="banner ok">✅ 已實名認證　信用分數 ${S.credit}</div>`:`<div class="banner">🪪 完成實名認證才能預約與上架<button data-a="verify">立即認證</button></div>`}
+<div class="three">
+ <button class="big" data-a="tab" data-v="thing"><b>🔄</b><span>惜物</span><small>附近 ${D.things.length} 件新上架</small></button>
+ <button class="big" data-a="tab" data-v="food"><b>🍞</b><span>惜食</span><small>今晚 ${D.food.length} 家有優惠</small></button>
+ <button class="big" data-a="tab" data-v="aid"><b>🍚</b><span>待用餐</span><small>共享池 ${S.pool} 張券</small></button>
+</div>
+<div class="sec"><h2>點數與低碳任務</h2></div>
+<div class="pts"><div class="r"><div><small>目前點數</small><div class="n">${S.pts}</div></div><button class="btn sm" style="background:var(--sun);color:#3A2800" data-a="coupons">兌換折價券</button></div>
+ <div class="task">🚶 步行或騎車去取餐 +15<button data-a="walk" ${S.walked?"disabled":""}>${S.walked?"已領取":"領點數"}</button></div>
+ <div class="task">🥬 登錄冰箱食材 +5<button data-a="newIngredient">登錄食材</button></div></div>
+<div class="sec"><h2>即將結束的惜食</h2><small>依距離與時間</small></div>
+${D.food.slice(0,3).map(foodCard).join("")}
+<div class="sec"><h2>附近惜物新上架</h2><button class="tag" data-a="tab" data-v="thing">看全部</button></div>
+${[...D.things].sort((a,b)=>S.sub.includes(b.cat)-S.sub.includes(a.cat)).slice(0,3).map(thingCard).join("")}
+<div class="sec"><h2>待用餐公益</h2></div>
+<div class="pool"><small>共享池現有待用券</small><div class="n">${S.pool} 張</div>
+ <div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" style="background:#fff;color:#0E6B63" data-a="goaid" data-v="give">我要捐款</button><button class="btn sm" style="background:rgba(255,255,255,.22);color:#fff" data-a="goaid" data-v="need">附近待用餐廳</button></div></div>
+<div class="sec"><h2>合作店家折價券</h2><small>用點數兌換</small></div>
+${D.coupons.map((c,i)=>`<div class="card"><div class="th">🎟️</div><div class="grow"><h3>${c.n}</h3><p>${c.c} 點</p></div><button class="btn sm" data-a="exch" data-v="${i}">兌換</button></div>`).join("")}
+<div class="sec"><h2>我的環保影響力</h2></div>
+<div class="stats"><div><b>${(S.orders.length*0.8+S.donated*0.02).toFixed(1)}</b><span>少浪費公斤</span></div><div><b>${S.orders.length}</b><span>救援次數</span></div><div><b>${S.donated}</b><span>捐出元</span></div></div>`;
+
+V.thing=()=>`
+<div class="chips">${[1,3,5].map(d=>`<button class="chip" aria-pressed="${S.dist===d}" data-a="dist" data-v="${d}">${d} 公里內</button>`).join("")}</div>
+<div class="chips">${["全部","家電","書籍","衣物","家具","其他"].map(c=>`<button class="chip" aria-pressed="${S.cat===c}" data-a="cat" data-v="${c}">${c}</button>`).join("")}</div>
+${S.cat!=="全部"?`<button class="btn alt" style="margin:0 0 10px" data-a="sub" data-v="${S.cat}">${S.sub.includes(S.cat)?"🔔 已訂閱":"🔕 訂閱"}「${S.cat}」上架通知</button>`:""}
+${(()=>{const l=[...S.myThings,...D.things].filter(i=>i.dist<=S.dist&&(S.cat==="全部"||i.cat===S.cat));return l.length?l.map(thingCard).join(""):'<p style="text-align:center;color:var(--sub);padding:30px">這個範圍沒有物品，試著放大距離。</p>'})()}`;
+
+function fridgeCards(){
+ const today=localDate();
+ const rows=S.fridge.map((item,index)=>({...item,index})).sort((a,b)=>a.date.localeCompare(b.date));
+ return `<div class="sec"><h2>冰箱效期提醒</h2><button class="btn sm" data-a="newIngredient">＋ 登錄食材</button></div>
+ ${rows.length?rows.map(item=>{
+  const days=(Date.parse(item.date)-Date.parse(today))/86400000;
+  const label=days<0?"已過期 "+(-days)+" 天":days===0?"今天到期":"剩 "+days+" 天";
+  return `<div class="card"><div class="grow"><h3>${esc(item.name)}${item.sample?"（範例）":""}</h3><p>有效日期 ${item.date}</p><span class="tag ${days<=1?"hot":days<=3?"sun":"fresh"}">${label}</span></div>
+  <button class="chip" aria-label="移除${esc(item.name)}" data-a="removeIngredient" data-v="${item.index}">移除</button></div>`;
+ }).join(""):'<div class="box"><p>冰箱裡還沒有食材，登錄有效日期後就能查看倒數。</p></div>'}`;
+}
+V.food=()=>`
+<div class="seg"><button aria-pressed="${S.foodView==="nearby"}" data-a="foodView" data-v="nearby">附近惜食</button><button aria-pressed="${S.foodView==="fridge"}" data-a="foodView" data-v="fridge">我的冰箱</button></div>
+${S.foodView==="fridge"?fridgeCards():`
+<div class="chips">${[["全部","全部"],["gift","贈送"],["sale","打折"],["blind","驚喜包"]].map(([k,l])=>`<button class="chip" aria-pressed="${S.fcat===k}" data-a="fcat" data-v="${k}">${l}</button>`).join("")}</div>
+${D.food.filter(f=>S.fcat==="全部"||f.type===S.fcat).map(foodCard).join("")}`}`;
+
+V.aid=()=>`
+<div class="seg" role="tablist"><button role="tab" aria-selected="${S.seg==="give"}" data-a="seg" data-v="give">我要捐</button><button role="tab" aria-selected="${S.seg==="need"}" data-a="seg" data-v="need">我需要</button></div>
+${S.seg==="give"?`
+<div class="pool"><small>共享池現有待用券</small><div class="n">${S.pool} 張</div><small>每 100 元善款 = 1 張待用餐券</small></div>
+<div class="sec"><h2>選擇捐款金額</h2></div>
+<div class="amt">${amounts.map(a=>`<button aria-pressed="${S.amt===a}" data-a="amt" data-v="${a}">$${a}</button>`).join("")}</div>
+<button class="btn" data-a="donate">線上捐款 → 轉成待用券</button>`:`
+<div class="box"><h3>我的待用券：${S.vouch.length} 張</h3><p>領券後，到合作餐廳出示數位券即可兌換餐點。</p>
+<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm" data-a="claim">領取待用券</button><button class="btn sm alt" data-a="use" ${S.vouch.length?"":"disabled"}>用券兌換</button></div></div>
+<div class="sec"><h2>附近有待用餐的餐廳</h2><small>地圖列表</small></div>
+<div style="height:120px;border-radius:16px;background:var(--soft);position:relative;margin-bottom:10px;overflow:hidden"><span style="position:absolute;left:22%;top:30%;font-size:26px">📍</span><span style="position:absolute;left:58%;top:52%;font-size:26px">📍</span><span style="position:absolute;left:75%;top:20%;font-size:26px">📍</span><span style="position:absolute;left:44%;top:64%;font-size:22px">🔵</span></div>
+${D.rest.map(r=>`<div class="card"><div class="th">${r.e}</div><div class="grow"><h3>${r.n}</h3><p>${r.dist}km · 今日供應：${r.meal}</p></div></div>`).join("")}
+<p style="font-size:12px;color:var(--sub);text-align:center">領券與兌換紀錄僅你自己看得到。</p>`}`;
+
+V.me=()=>`
+<div class="box" style="display:flex;gap:12px;align-items:center"><div class="th">🙂</div><div class="grow"><h3 style="margin:0">我的帳號</h3><p>${S.verified?"✅ 已實名認證":"⚠️ 尚未實名認證"} · 信用分數 ${S.credit}</p></div>${S.verified?"":'<button class="btn sm" data-a="verify">認證</button>'}</div>
+<div class="stats"><div><b>${S.pts}</b><span>點數</span></div><div><b>${S.coup.length}</b><span>折價券</span></div><div><b>${S.vouch.length}</b><span>待用券</span></div></div>
+<div class="sec"><h2>我的訂單</h2></div>
+${S.orders.length?S.orders.map(o=>`<div class="card"><div class="th">${o.e}</div><div class="grow"><h3>${esc(o.n)}</h3><p>${esc(o.s)}</p></div></div>`).join(""):'<p style="color:var(--sub);font-size:13px;padding:4px 2px">還沒有訂單。預約惜食或惜物後會顯示在這裡。</p>'}
+<div class="sec"><h2>我的折價券</h2></div>
+${S.coup.length?S.coup.map(c=>`<div class="card"><div class="th">🎟️</div><div class="grow"><h3>${esc(c)}</h3><p>可於合作店家使用</p></div></div>`).join(""):'<p style="color:var(--sub);font-size:13px;padding:4px 2px">用點數兌換後會放在這裡。</p>'}
+<div class="sec"><h2>信用積分規則</h2></div>
+<div class="box"><p>準時取貨、面交 +2　·　預約後放鳥 −15　·　低於 60 分暫停預約</p></div>`;
+
+const P={};
+P.thing=id=>{const i=[...S.myThings,...D.things].find(x=>x.id==id);return{t:"物品詳情",h:`<div class="hero">${i.e}</div><div class="box"><h3>${esc(i.n)}</h3><p>分類：${i.cat}　·　距離 ${i.dist}km</p><p>賣家：${esc(i.who)}（${i.by}）</p><p class="price" style="font-size:22px;margin-top:8px">$${i.price}</p></div>
+<button class="btn" data-a="chat" data-v="thing-${i.id}">💬 和賣家對話</button>
+<button class="btn alt" data-a="buy" data-v="${i.id}">預約面交</button>`}};
+P.food=id=>{const f=D.food.find(x=>x.id==id);return{t:"惜食詳情",h:`<div class="hero">${f.e}</div><div class="box"><h3>${esc(f.shop)}｜${esc(f.name)}</h3>${tagOf(f)}
+<p>取餐時間：${f.until}前　·　距離 ${f.dist}km　·　剩 ${f.left} 份</p>${f.note?`<p>🎁 ${f.note}</p>`:""}
+<p style="margin-top:8px">${f.type==="gift"?'<b style="color:var(--pri);font-size:20px">免費贈送</b>':`<span class="price" style="font-size:22px">$${f.now}</span><span class="was">$${f.was}</span>`}</p></div>
+<button class="btn" data-a="reserve" data-v="${f.id}">${f.type==="gift"?"預約領取":"預約購買"}</button>
+<button class="btn alt" data-a="chat" data-v="food-${f.id}">💬 詢問店家</button>`}};
+P.ingredient=()=>({t:"登錄冰箱食材",h:`<form class="box" id="ingredientForm">
+ <label class="field"><span>食材名稱</span><input class="ctl" name="ingredient" maxlength="60" placeholder="例如：鮮奶" required></label>
+ <label class="field"><span>有效日期</span><input class="ctl" type="date" name="expiry" required></label>
+ <button class="btn" type="submit">登錄食材 +5 點</button></form>`});
+function chatInfo(key){
+ const [kind,id]=key.split("-");
+ if(kind==="food"){
+  const f=D.food.find(x=>x.id==id);
+  return {name:f.shop,subject:f.name,icon:f.e};
+ }
+ const i=[...S.myThings,...D.things].find(x=>x.id==id);
+ return {name:i.who,subject:i.n,icon:i.e};
+}
+P.chatlist=()=>({t:"對話列表",h:Object.keys(S.chats).length?Object.entries(S.chats).map(([key,messages])=>{
+ const {name,subject,icon}=chatInfo(key);
+ const last=messages[messages.length-1];
+ return `<button class="card" data-a="chat" data-v="${key}"><div class="th">${icon}</div><div class="grow"><h3>${esc(name)}</h3><p>${esc(subject)}</p><p>${last?esc(last.t):"尚未傳送訊息"}</p></div><span aria-hidden="true">›</span></button>`;
+}).join(""):'<div class="box"><h3>目前沒有對話</h3><p>從惜物詳情點「和賣家對話」，或從惜食詳情點「詢問店家」，就能開始聊天。</p></div>'});
+P.chat=k=>{const m=S.chats[k]||[];return{t:chatInfo(k).name,h:`<div class="chat" id="chat">${m.length?m.map(x=>`<div class="msg ${x.me?"me":""}">${esc(x.t)}</div>`).join(""):'<p style="text-align:center;color:var(--sub)">打聲招呼，確認物品狀況與面交時間。</p>'}</div><div class="send"><input id="msg" placeholder="輸入訊息" aria-label="輸入訊息"><button class="btn sm" data-a="send" data-v="${k}">送出</button></div>`,raw:true}};
+P.notif=()=>({t:"通知",h:S.notes.map(n=>`<div class="card"><div class="th">🔔</div><div class="grow"><p style="color:var(--ink)">${esc(n.t)}</p></div></div>`).join("")});
+P.coupons=()=>({t:"兌換折價券",h:`<div class="pts" style="margin-bottom:12px"><small>目前點數</small><div class="n">${S.pts}</div></div>${D.coupons.map((c,i)=>`<div class="card"><div class="th">🎟️</div><div class="grow"><h3>${c.n}</h3><p>${c.c} 點</p></div><button class="btn sm" data-a="exch" data-v="${i}">兌換</button></div>`).join("")}`});
+P.post=()=>({t:"上架二手物",h:`<label class="field"><span>物品名稱</span><input class="ctl" id="p-n" placeholder="例如：電風扇"></label>
+<label class="field"><span>分類</span><select class="ctl" id="p-c"><option>家電</option><option>書籍</option><option>衣物</option><option>家具</option><option>其他</option></select></label>
+<label class="field"><span>價格</span><input class="ctl" id="p-p" type="number" min="0" placeholder="0 代表免費"></label>
+<label class="field"><span>上架身分</span><select class="ctl" id="p-b"><option>個人</option><option>團體</option></select></label>
+<button class="btn" data-a="post">上架</button>`});
+
+function render(){
+  const p=S.push;
+  let top,body;
+  if(p){const r=P[p.k](p.v);top=`<div class="top"><button class="ic" data-a="back" aria-label="返回">‹</button><h1>${esc(r.t)}</h1></div>`;body=r.h}
+  else{
+    const ttl={home:null,thing:"惜物",food:"惜食",aid:"待用餐",me:"我的"}[S.tab];
+    top=`<div class="top">${ttl?`<h1>${ttl}</h1>`:'<button class="loc" data-a="msg" data-v="已定位：台北市">📍 台北市 ▾</button>'}<button class="ic" data-a="chatlist" aria-label="對話">💬</button><button class="ic" data-a="notif" aria-label="通知">🔔${S.unread?`<span class="dot">${S.unread}</span>`:""}</button></div>`;
+    body=V[S.tab]();
+  }
+  $("#top").innerHTML=top;
+  const m=$("#main");const keep=m.scrollTop;
+  m.innerHTML=p&&p.k==="chat"?"":body;m.style.display=p&&p.k==="chat"?"none":"";
+  let ex=$("#chatwrap");if(ex)ex.remove();
+  if(p&&p.k==="chat"){const w=document.createElement("div");w.id="chatwrap";w.style.cssText="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:70px";w.innerHTML=body;m.after(w);const c=$("#chat");c.scrollTop=c.scrollHeight}
+  $("#fab").innerHTML=!p&&(S.tab==="thing")?'<button class="fab" data-a="newpost">＋ 上架二手物</button>':"";
+  $("#nav").innerHTML=[["home","🏠","首頁"],["thing","🔄","惜物"],["food","🍞","惜食"],["aid","🍚","待用餐"],["me","👤","我的"]].map(([k,i,l])=>`<button data-a="tab" data-v="${k}" ${S.tab===k&&!p?'aria-current="page"':""}><b>${i}</b>${l}</button>`).join("");
+  if(!p)m.scrollTop=keep;
+}
+const go=(k,v)=>{S.push={k,v,previous:S.push};render();$("#main").scrollTop=0};
+const A={
+ tab:v=>{S.tab=v;S.push=null;render();$("#main").scrollTop=0},
+ goaid:v=>{S.tab="aid";S.seg=v;S.push=null;render();$("#main").scrollTop=0},
+ back:()=>{S.push=S.push?.previous || null;render()},
+ open:(v,e)=>go(e.dataset.k,v),
+ msg:v=>T(v),
+ verify:()=>{S.verified=true;note("實名認證完成，可以開始預約與上架。");T("實名認證完成");render()},
+ notif:()=>{go("notif");S.unread=0;render()},
+ chatlist:()=>go("chatlist"),
+ dist:v=>{S.dist=+v;render()},cat:v=>{S.cat=v;render()},fcat:v=>{S.fcat=v;render()},seg:v=>{S.seg=v;render()},amt:v=>{S.amt=+v;render()},
+ sub:v=>{const i=S.sub.indexOf(v);i<0?(S.sub.push(v),T("已訂閱「"+v+"」上架通知")):(S.sub.splice(i,1),T("已取消訂閱"));render()},
+ walk:()=>{S.walked=true;S.pts+=15;T("低碳移動 +15 點");render()},
+ foodView:v=>{S.foodView=v;render();$("#main").scrollTop=0},
+ newIngredient:()=>go("ingredient"),
+ removeIngredient:v=>{
+  S.fridge.splice(Number(v),1);
+  const saved=saveFridge(S.fridge);
+  render();T(saved?"已移除食材":"已移除，本次變更僅保留於此頁");
+ },
+ exch:v=>{const c=D.coupons[v];if(S.pts<c.c)return T("點數不足");S.pts-=c.c;S.coup.push(c.n);T("兌換成功：「"+c.n+"」");render()},
+ coupons:()=>go("coupons"),
+ chat:v=>{S.chats[v]=S.chats[v]||[];go("chat",v)},
+ send:v=>{const el=$("#msg"),t=el.value.trim();if(!t)return;S.chats[v].push({t,me:true});S.chats[v].push({t:"收到，稍後回覆你。",me:false});render()},
+ buy:v=>{if(need())return;const i=[...S.myThings,...D.things].find(x=>x.id==v);S.orders.unshift({e:i.e,n:i.n,s:"已預約面交，請準時赴約"});note("已預約「"+i.n+"」，請和賣家確認面交時間。");S.push=null;T("預約成功");render()},
+ reserve:v=>{if(need())return;const f=D.food.find(x=>x.id==v);if(f.left<1)return T("已被領完");f.left--;S.orders.unshift({e:f.e,n:f.shop+"｜"+f.name,s:f.until+"前取餐"});note("已預約「"+f.name+"」，"+f.until+"前取餐，放鳥會扣信用分。");S.push=null;T("預約成功，記得準時取餐");render()},
+ donate:()=>{if(need())return;if(!amounts.includes(S.amt))return T("請選擇有效的捐款金額");const n=S.amt/100;S.pool+=n;S.donated+=S.amt;S.pts+=5;note("感謝捐款 $"+S.amt+"，已轉成 "+n+" 張待用券。");T("捐款 $"+S.amt+" → 新增 "+n+" 張待用券");render()},
+ claim:()=>{if(need())return;if(S.pool<1)return T("共享池目前沒有券");S.pool--;S.vouch.push(1);T("已領取 1 張待用券");render()},
+ use:()=>{S.vouch.pop();S.used++;T("兌換成功，請向餐廳出示此畫面");render()},
+ newpost:()=>{if(need())return;go("post")},
+ post:()=>{const n=$("#p-n").value.trim();if(!n)return T("請輸入物品名稱");S.myThings.unshift({id:Date.now(),e:"📦",n,cat:$("#p-c").value,dist:.1,price:+$("#p-p").value||0,by:$("#p-b").value,who:"我"});S.push=null;S.tab="thing";S.cat="全部";T("上架成功");render()}
+};
+document.addEventListener("submit",e=>{
+ if(e.target.id!=="ingredientForm")return;
+ e.preventDefault();
+ const {ingredient,expiry}=e.target.elements;
+ const name=ingredient.value.trim(),date=expiry.value;
+ if(!name){ingredient.focus();return T("請輸入食材名稱")}
+ if(!validDate(date))return T("請輸入有效日期");
+ S.fridge.push({name,date});
+ const saved=saveFridge(S.fridge);
+ S.pts+=5;S.foodView="fridge";A.tab("food");
+ T(saved?"已登錄食材 +5 點":"已登錄 +5 點，食材僅保留於此頁");
+});
+let lastDay=localDate();
+function refreshDay(){
+ const day=localDate();
+ if(day===lastDay)return;
+ lastDay=day;
+ if(S.tab==="food" && S.foodView==="fridge" && !S.push)render();
+}
+setInterval(refreshDay,30000);
+document.addEventListener("visibilitychange",refreshDay);
+document.addEventListener("click",e=>{const t=e.target.closest("[data-a]");if(!t||t.disabled)return;A[t.dataset.a]?.(t.dataset.v,t)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="msg"){const b=document.querySelector('[data-a="send"]');b&&b.click()}});
+render();
+</script>
+</body>
+</html>
